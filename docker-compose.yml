@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: marketplace-nft
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql:/var/lib/mysql
+
+volumes:
+  mysql:
