@@ -1,19 +1,17 @@
 import prismaClient from '../prismaClient';
 
 interface IUserProps {
-  email: string
-  name: string
-  password: string
-};
+  email: string;
+  name: string;
+  password: string;
+}
 
 export class CreateUserService {
-
   async execute({ email, name, password }: IUserProps) {
-
     const userExist = await prismaClient.user.findFirst({
       where: {
-        email
-      }
+        email,
+      },
     });
 
     if (userExist) {
@@ -28,12 +26,10 @@ export class CreateUserService {
       data: {
         name,
         email,
-        password
-      }
+        password,
+      },
     });
 
     return createUser;
-
   }
-
 }

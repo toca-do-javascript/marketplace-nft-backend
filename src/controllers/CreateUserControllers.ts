@@ -1,10 +1,8 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { CreateUserService } from '../services/createUserService';
-
 
 export class CreateUserController {
   async handle(req: Request, res: Response) {
-
     const userService = new CreateUserService();
 
     const { name, email, password } = req.body;
@@ -12,11 +10,9 @@ export class CreateUserController {
     const response = await userService.execute({
       name,
       email,
-      password
+      password,
     });
 
     return res.status(201).json(response);
-
-
   }
 }
