@@ -10,7 +10,8 @@
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\"",
-    "studio": "prisma studio"
+    "studio": "prisma studio",
+    "vercel-build": "yarn prisma generate && yarn prisma migrate deploy"
   },
   "engines": {
     "npm": "please-use-yarn",
