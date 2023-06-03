@@ -17,7 +17,7 @@ export default class UserEntity {
     this.updatedAt = data.updatedAt;
   }
 
-  isValid(): Error | true {
+  hasError(): object | null {
     const schema = z.object({
       name: z.string().trim().min(3).max(255),
       email: z.string().trim().email(),
@@ -31,10 +31,10 @@ export default class UserEntity {
     });
 
     if (!validation.success) {
-      return new Error(JSON.stringify(validation.error.issues));
+      return validation.error.issues;
     }
 
-    return true;
+    return null;
   }
 }
 
