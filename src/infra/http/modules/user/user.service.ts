@@ -3,7 +3,11 @@ import type UserEntity from '../../../../domain/entities/user.entity';
 import { hashSync } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import env from '../../../config/env';
+<<<<<<< Updated upstream
 import UnprocessableEntitieException from '../../exceptions/unprocessable-entitie.exception';
+=======
+import LoginDto from './dtos/login.dto';
+>>>>>>> Stashed changes
 
 export default class UserService {
   prisma: PrismaClient;
@@ -49,5 +53,9 @@ export default class UserService {
       user: createUser,
       token: sign({ id: createUser.id }, env.jwtSecret),
     };
+  }
+
+  async login(user: LoginDto) {
+    const { email, password } =
   }
 }
