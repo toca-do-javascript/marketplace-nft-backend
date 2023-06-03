@@ -1,16 +1,14 @@
 import { type PrismaClient } from '@prisma/client';
 import type UserEntity from '../../../../domain/entities/user.entity';
-import { hashSync } from 'bcrypt';
+import { compareSync, hashSync } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import env from '../../../config/env';
-<<<<<<< Updated upstream
 import UnprocessableEntitieException from '../../exceptions/unprocessable-entitie.exception';
-=======
-import LoginDto from './dtos/login.dto';
->>>>>>> Stashed changes
+import type LoginDto from './dtos/login.dto';
+import BadRequestException from '../../exceptions/bad-request.exception';
 
 export default class UserService {
-  prisma: PrismaClient;
+  private readonly prisma: PrismaClient;
 
   constructor(client: PrismaClient) {
     this.prisma = client;
@@ -56,6 +54,29 @@ export default class UserService {
   }
 
   async login(user: LoginDto) {
-    const { email, password } =
+    const findUser = await this.prisma.user.findUnique({
+      where: {
+        email: user.email,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: true,
+      },
+    });
+
+    if (!findUser) {
+      throw new BadRequestException('Usuário não encontrado.');
+    } else if (!compareSync(user.password, findUser.password)) {
+      throw new BadRequestException('Senha incorreta.');
+    }
+
+    const { password, ...userData } = findUser;
+
+    return {
+      user: userData,
+      token: sign({ id: userData.id }, env.jwtSecret),
+    };
   }
 }
