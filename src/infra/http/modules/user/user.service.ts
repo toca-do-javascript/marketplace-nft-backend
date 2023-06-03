@@ -54,6 +54,10 @@ export default class UserService {
   }
 
   async login(user: LoginDto) {
+    if (!user.email) {
+      throw new BadRequestException('Email não informado.');
+    }
+
     const findUser = await this.prisma.user.findUnique({
       where: {
         email: user.email,

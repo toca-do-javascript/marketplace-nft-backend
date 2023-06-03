@@ -13,7 +13,7 @@ app.use(router);
 
 app.use(errorMiddleware);
 
-app.listen(process.env.PORT || 3333, () => {
+app.listen(process.env.PORT || 6060, () => {
   console.log('Server in running... 🚀🚀');
 });
 
