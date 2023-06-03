@@ -3,6 +3,7 @@ import type UserEntity from '../../../../domain/entities/user.entity';
 import { hashSync } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import env from '../../../config/env';
+import UnprocessableEntitieException from '../../exceptions/unprocessable-entitie.exception';
 
 export default class UserService {
   prisma: PrismaClient;
@@ -12,10 +13,12 @@ export default class UserService {
   }
 
   async create(user: UserEntity) {
-    const userIsValid = user.isValid();
+    const entityHasError = user.hasError();
 
-    if (userIsValid instanceof Error) {
-      throw userIsValid;
+    if (entityHasError) {
+      throw new UnprocessableEntitieException({
+        error: entityHasError,
+      });
     }
 
     const userExist = await this.prisma.user.findFirst({
