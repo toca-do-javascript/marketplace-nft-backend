@@ -31,8 +31,8 @@ export default class UserController {
   }
 
   async edit(req: Request, res: Response) {
-    const { name, email, password, updatedAt } = req.body as EditUserDto;
-    const body = { name, email, password, updatedAt };
+    const { name, email, password } = req.body as EditUserDto;
+    const body = { name, email, password };
     const id = req.query.id as string;
 
     const editUser = await this.userService.edit(id, body);

@@ -96,8 +96,8 @@ export default class UserService {
       throw new BadRequestException('Usuário não encontrado.');
     }
 
-    if (user.name === '' && user.email === '' && user.password === '') {
-      throw new BadRequestException('Campos obrigatórios vazios.');
+    if (user.name === '' || user.email === '' || user.password === '') {
+      throw new UnprocessableEntitieException('Campos obrigatórios vazios.');
     }
 
     const result = await this.prisma.user.update({
@@ -108,8 +108,6 @@ export default class UserService {
         name: user.name,
         email: user.email,
         password: hashSync(user.password, 10),
-        createdAt: findUser.createdAt,
-        updatedAt: new Date(),
       },
       select: {
         id: true,

@@ -3,5 +3,4 @@ export default interface EditUserDto {
   email: string;
   name: string;
   password: string;
-  updatedAt: Date;
 }
