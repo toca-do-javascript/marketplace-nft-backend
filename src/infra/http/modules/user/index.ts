@@ -12,5 +12,6 @@ const router = Router();
 
 router.post('/', (req, res) => userController.create(req, res));
 router.post('/login', (req, res) => userController.login(req, res));
+router.patch('/', (req, res) => userController.edit(req, res));
 
 export default router;
