@@ -4,6 +4,7 @@ import type CreateUserDto from './dtos/create-user.dto';
 import UserEntity from '../../../../domain/entities/user.entity';
 import type LoginDto from './dtos/login.dto';
 import type EditUserDto from './dtos/edit.dto';
+import type { AuthenticatedUser } from '../../middlewares/authenticated-user.middleware';
 
 export default class UserController {
   private readonly userService: UserService;
@@ -31,9 +32,9 @@ export default class UserController {
   }
 
   async edit(req: Request, res: Response) {
-    const { name, email, password } = req.body as EditUserDto;
-    const body = { name, email, password };
-    const id = req.query.id as string;
+    const user = req['user'] as AuthenticatedUser;
+    const body = req.body as EditUserDto;
+    const id = user.id;
 
     const editUser = await this.userService.edit(id, body);
 

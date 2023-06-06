@@ -12,9 +12,9 @@ export default class HttpException extends Error {
     this.message = JSON.stringify(
       typeof message === 'string'
         ? {
-          message,
-          status,
-        }
+            message,
+            status,
+          }
         : message
     );
     this.status = status;

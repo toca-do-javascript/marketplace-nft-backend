@@ -1,5 +1,7 @@
 import 'dotenv/config';
 
-export default {
+const env = {
   jwtSecret: process.env.JWT_SECRET ?? 'secret',
 };
+
+export default env;
