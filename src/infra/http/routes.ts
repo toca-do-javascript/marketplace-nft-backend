@@ -12,6 +12,4 @@ router.get('/', (req, res) => {
 
 router.use('/users', userModule);
 
-// router.post('/create/user', new CreateUserController().handle);
-
 export { router };

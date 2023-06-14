@@ -6,6 +6,7 @@ import env from '../../../config/env';
 import UnprocessableEntitieException from '../../exceptions/unprocessable-entitie.exception';
 import type LoginDto from './dtos/login.dto';
 import BadRequestException from '../../exceptions/bad-request.exception';
+import type EditUserDto from './dtos/edit.dto';
 
 export default class UserService {
   private readonly prisma: PrismaClient;
@@ -81,6 +82,45 @@ export default class UserService {
     return {
       user: userData,
       token: sign({ id: userData.id }, env.jwtSecret),
+    };
+  }
+
+  async edit(cod: string, user: EditUserDto) {
+    const findUser = await this.prisma.user.findUnique({
+      where: {
+        id: cod,
+      },
+    });
+
+    if (!findUser) {
+      throw new BadRequestException('Usuário não encontrado.');
+    }
+
+    if (user.name === '' || user.email === '' || user.password === '') {
+      throw new UnprocessableEntitieException('Campos obrigatórios vazios.');
+    }
+
+    const result = await this.prisma.user.update({
+      where: {
+        id: cod,
+      },
+      data: {
+        name: user.name,
+        email: user.email,
+        password: hashSync(user.password, 10),
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        password: false,
+        createdAt: false,
+        updatedAt: true,
+      },
+    });
+
+    return {
+      user: result,
     };
   }
 }
